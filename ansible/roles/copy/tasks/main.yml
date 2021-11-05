@@ -1,0 +1,39 @@
+---
+# - name: copy check.py to remote hosts
+#   copy:
+#     src: '{{ src_check }}'
+#     dest: '{{ dest_dir }}'
+#     owner: '{{ owner }}'
+#     group: '{{ group }}'
+#     mode: 0744
+#   tags:
+#   - check
+
+# - name: Config check.py
+#   template:
+#     src: "templates/check.py.j2"
+#     dest: "{{ dest_dir }}check.py"
+#   tags:
+#   - check
+
+# - name: run check.py on remost hosts
+#   shell:
+#     chdir: "{{ dest_dir}}"
+#     cmd: python check.py
+
+- name: Check exists folder
+  stat:
+    path: '{{ dest_dir }}/src'
+  register: check
+
+- name: Move old source code to orther folder
+  command: mv '{{ dest_dir }}/src' '{{ dest_dir }}/{{ ansible_date_time.date }}-{{ ansible_date_time.time }}'
+  when: check.stat.exists
+
+- name: copy source code to remote hosts
+  copy:
+    src: '{{ src_dir }}'
+    dest: '{{ dest_dir }}'
+    owner: '{{ owner }}'
+    group: '{{ group }}'
+    mode: 0744

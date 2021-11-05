@@ -1,0 +1,22 @@
+import os
+import shutil
+import datetime
+
+path = '{{ dest_dir }}/'
+directory_contents = os.listdir(path)
+only_dir = []
+for item in directory_contents:
+    if os.path.isdir(path + item):
+        only_dir.append(path + item)
+only_dir.sort(key=os.path.getmtime, reverse=True)
+print(only_dir)
+format_time="%d%m%Y%H%M%S"
+if(len(only_dir) > 2):
+    shutil.rmtree(only_dir[2])
+    os.rename(only_dir[1],'src' + datetime.datetime.now().strftime(format_time) + '_v2')
+    os.rename(only_dir[0],'src' + datetime.datetime.now().strftime(format_time) + '_v1')
+elif(len(only_dir) == 2):
+    os.rename(only_dir[1],'src' + datetime.datetime.now().strftime(format_time) + '_v2')
+    os.rename(only_dir[0],'src' + datetime.datetime.now().strftime(format_time) + '_v1')
+elif(len(only_dir) == 1):
+    os.rename(only_dir[0],'src' + datetime.datetime.now().strftime(format_time) + '_v1')

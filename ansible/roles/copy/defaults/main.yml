@@ -1,0 +1,5 @@
+---
+src_dir: ~/commit-ansible/src
+# src_check: ~/commit-ansible/test.py
+owner: '{{ ansible_user }}'
+group: '{{ ansible_user }}'

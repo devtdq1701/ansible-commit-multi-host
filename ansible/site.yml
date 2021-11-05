@@ -1,0 +1,14 @@
+---
+- hosts: centos
+  # become: yes
+  # become root user
+  # user: root
+  # become_method: sudo
+  roles:
+    - role: copy
+      tags:
+      - copy
+
+    - role: config
+      tags:
+      - config
